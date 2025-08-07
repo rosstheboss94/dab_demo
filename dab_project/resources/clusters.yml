@@ -1,0 +1,28 @@
+variables:
+  ds3_v2_sn:
+    type: complex
+    default:
+      cluster_name: ""
+      spark_version: 16.4.x-scala2.12
+      node_type_id: Standard_DS3_v2
+      spark_env_vars:
+        PYSPARK_PYTHON: /databricks/python3/bin/python3
+      data_security_mode: DATA_SECURITY_MODE_DEDICATED
+      runtime_engine: STANDARD
+      kind: CLASSIC_PREVIEW
+      use_ml_runtime: true
+      is_single_node: true
+
+  f4_sn:
+    type: complex
+    default:
+      cluster_name: ""
+      spark_version: 16.4.x-scala2.12
+      node_type_id: Standard_F4
+      spark_env_vars:
+        PYSPARK_PYTHON: /databricks/python3/bin/python3
+      data_security_mode: DATA_SECURITY_MODE_DEDICATED
+      runtime_engine: STANDARD
+      kind: CLASSIC_PREVIEW
+      use_ml_runtime: true
+      is_single_node: true
