@@ -27,6 +27,8 @@ jobs:
           python -m pip install --upgrade pip
           cd $GITHUB_WORKSPACE/dab_project
           pip install -r requirements-pyspark.txt
+          python .\setup.py bdist_wheel  
+          pip install .\dist\dab_project-0.0.1-py3-none-any.whl
 
       - name: Run pytest & generate HTML report
         run: |
@@ -35,6 +37,9 @@ jobs:
             --disable-warnings \
             --cov=./src \
             --cov-report=html
+
+      - name: List coverage report files
+        run: ls -la $GITHUB_WORKSPACE/dab_project/
 
       - name: Upload coverage HTML report
         uses: actions/upload-artifact@v4
