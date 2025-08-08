@@ -29,6 +29,7 @@ jobs:
 
       - name: Run pytest & generate HTML report
         run: |
+          cd $GITHUB_WORKSPACE/dab_project
           pytest \
             --disable-warnings \
             --cov=./src \
