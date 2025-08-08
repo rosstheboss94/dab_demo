@@ -40,10 +40,10 @@ jobs:
             --cov-report=html
 
       - name: List coverage report files
-        run: ls -la $GITHUB_WORKSPACE/dab_project/
+        run: ls -la /home/runner/work/dab_demo/dab_demo/dab_project/htmlcov/
 
       - name: Upload coverage HTML report
         uses: actions/upload-artifact@v4
         with:
           name: coverage-html
-          path: $GITHUB_WORKSPACE/dab_project/htmlcov/**
+          path: /home/runner/work/dab_demo/dab_demo/dab_project/htmlcov/**
