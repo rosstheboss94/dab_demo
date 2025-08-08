@@ -41,6 +41,7 @@ jobs:
 
       - name: Deploy to TEST
         run: |
+          cd $GITHUB_WORKSPACE/dab_project
           databricks bundle deploy \
             --target test \
             --profile TEST
@@ -78,6 +79,7 @@ jobs:
 
       - name: Deploy to PROD
         run: |
+          cd $GITHUB_WORKSPACE/dab_project
           databricks bundle deploy \
             --target prod \
             --profile PROD
