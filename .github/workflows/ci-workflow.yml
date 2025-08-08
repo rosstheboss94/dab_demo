@@ -46,4 +46,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage-html
-          path: $GITHUB_WORKSPACE/dab_project/htmlcov
+          path: $GITHUB_WORKSPACE/dab_project/htmlcov/**
