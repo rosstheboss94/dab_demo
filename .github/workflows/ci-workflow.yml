@@ -28,6 +28,7 @@ jobs:
           cd $GITHUB_WORKSPACE/dab_project
           pip install -r requirements-pyspark.txt
           python setup.py bdist_wheel  
+          ls -la $GITHUB_WORKSPACE/dab_project/dist
           pip install .\dist\dab_project-0.0.1-py3-none-any.whl
 
       - name: Run pytest & generate HTML report
