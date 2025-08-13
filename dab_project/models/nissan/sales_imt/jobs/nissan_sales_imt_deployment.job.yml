@@ -1,0 +1,22 @@
+resources:
+  jobs:
+    nissan_sales_imt_depoyment_py:
+      name: nissan_sales_imt_deployment_py
+      tasks:
+        - task_key: deployment
+          spark_python_task:
+            python_file: ../deployment_config.py
+            parameters:
+              - "{{job.id}}"
+              - "{{job.run_id}}"
+              - "{{task.run_id}}"
+              - "{{job.start_time.iso_datetime}}"
+              - "${var.catalog}"
+          job_cluster_key: ds3_v2_sn
+          libraries:
+            - whl: ../../../../dist/*.whl
+      job_clusters:
+        - job_cluster_key: ds3_v2_sn
+          new_cluster: "${var.ds3_v2_sn}"
+      queue:
+        enabled: true
