@@ -1,0 +1,87 @@
+resources:
+  jobs:
+    nissan_sales_imt_scoring_py:
+      name: nissan_sales_imt_scoring_py
+      tasks:
+        - task_key: data_pull
+          spark_python_task:
+            python_file: ../inference/data_pull.py
+            parameters:
+              - "{{job.id}}"
+              - "{{job.run_id}}"
+              - "{{task.run_id}}"
+              - "{{job.start_time.iso_datetime}}"
+              - "${var.catalog}"
+          job_cluster_key: docker_image_cluster
+          libraries:
+            - whl: ../../../../dist/*.whl
+
+        - task_key: preprocessing
+          depends_on:
+            - task_key: data_pull
+          spark_python_task:
+            python_file: ../inference/preprocessing.py
+            parameters:
+              - "{{job.id}}"
+              - "{{job.run_id}}"
+              - "{{task.run_id}}"
+              - "{{job.start_time.iso_datetime}}"
+              - "${var.catalog}"
+          job_cluster_key: docker_image_cluster
+
+        - task_key: scoring
+          depends_on:
+            - task_key: preprocessing
+          spark_python_task:
+            python_file: ../inference/scoring.py
+            parameters:
+              - "{{job.id}}"
+              - "{{job.run_id}}"
+              - "{{task.run_id}}"
+              - "{{job.start_time.iso_datetime}}"
+              - "${var.catalog}"
+          job_cluster_key: docker_image_cluster
+
+        - task_key: validation
+          depends_on:
+            - task_key: scoring
+          spark_python_task:
+            python_file: ../inference/validation.py
+            parameters:
+              - "{{job.id}}"
+              - "{{job.run_id}}"
+              - "{{task.run_id}}"
+              - "{{job.start_time.iso_datetime}}"
+              - "${var.catalog}"
+          job_cluster_key: docker_image_cluster
+
+        - task_key: insert
+          depends_on:
+            - task_key: validation
+          spark_python_task:
+            python_file: ../inference/insert.py
+            parameters:
+              - "{{job.id}}"
+              - "{{job.run_id}}"
+              - "{{task.run_id}}"
+              - "{{job.start_time.iso_datetime}}"
+              - "${var.catalog}"
+          job_cluster_key: docker_image_cluster
+
+      job_clusters:
+        - job_cluster_key: docker_image_cluster
+          new_cluster:
+            node_type_id: Standard_DS3_v2
+            is_single_node: true
+            kind: CLASSIC_PREVIEW
+            autotermination_minutes: 20
+            single_user_name: ${workspace.current_user.userName}
+            data_security_mode: SINGLE_USER
+            runtime_engine: STANDARD
+            use_ml_runtime: true
+            spark_version: 16.4.x-scala2.12
+            docker_image:
+              url: databricksruntime/standard:16.4-LTS
+
+      queue:
+        enabled: true

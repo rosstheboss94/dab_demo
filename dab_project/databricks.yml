@@ -7,10 +7,16 @@ bundle:
 include:
   - resources/*.yml
   - resources/*/*.yml
+  - models/*/*/jobs/*.yml
 
 variables:
   catalog:
     default: "citibike_dev"
+
+scripts:
+  create_clusters:
+    content: databricks clusters create --json @resources/clusters/custom1.json
+    # content: ls
 
 targets:
   dev:
